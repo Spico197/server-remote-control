@@ -1,0 +1,13 @@
+[
+    {
+        "ip": "1.1.1.1",
+        "ssh_port": 22,
+        "username": "root",
+        "password": "rootPasswordForLinuxSystem",
+        "manage_url": "http://host.to.manage.system",
+        "manage_username": "admin",
+        "manage_password": "adminpass",
+        "manage_type": "inspur",
+        "memo": "8卡GPU服务器"
+    }
+]

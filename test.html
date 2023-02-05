@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" id="ng-app">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+      <style type="text/css">
+      /* Sticky footer styles
+    -------------------------------------------------- */
+
+      html,
+      body {
+          height: 100%;
+          background-color: #F3F5F8;
+          /* The html and body elements cannot have any padding or margin. */
+      }
+
+      .font-style{
+          font-family: "ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif
+      }
+
+      /* Wrapper for page content to push down footer */
+      #wrap {
+          min-height: 100%;
+          height: auto !important;
+          height: 100%;
+          /* Negative indent footer by it's height */
+          margin: 0 auto -60px;
+      }
+
+      /* Set the fixed height of the footer here */
+      #push,
+      #footer {
+          height: 60px;
+      }
+      #footer {
+          background-color: #f5f5f5;
+      }
+
+      /* Lastly, apply responsive CSS fixes as necessary */
+      @media (max-width: 767px) {
+          #footer {
+              margin-left: -20px;
+              margin-right: -20px;
+              padding-left: 20px;
+              padding-right: 20px;
+          }
+      }
+      @media (max-height: 504px) {
+          #footer {
+              margin-top:10px;
+          }
+      }
+
+      /* Custom page CSS
+      -------------------------------------------------- */
+      /* Not required for template or sticky footer method. */
+      @media (min-width: 768px){
+          .login-btn-position{
+              float:right;
+              display:inline;
+          }
+          .browser-border{
+              border-right: solid 1px #DBDDDF
+          }
+          .login-btn-box{
+              width:249px;
+          }
+      }
+
+      @media (max-width: 768px) {
+          .login-btn-position{
+              float:right;
+              display:block;
+          }
+          .browser-border{
+              border-right:0px;
+          }
+          .left-width{
+              padding-left:100px;
+          }
+          .login-btn-box{
+              width:190px;
+          }
+      }
+
+      #lanUl a{
+          color:black;
+      }
+
+      #lanUl a:hover{
+          color:white;
+      }
+
+      /* important responsive setting */
+      @media (max-width: 979px) {
+          .navbar-inner
+          {
+              background-size: auto 51px;
+          }
+      }
+    </style>
+  </head>
+
+  <body>
+        <script src="lib/ui.js"></script> <!-- add by zhchhong 20151024 fro multi web login, add here, when added at the end of body, there is an error -->
+    <div id="wrap">
+
+    <div class="navbar navbar-fixed-top" style="border-bottom: 1px solid #D5DEEA">
+       <div class="navbar-inner" style="border-bottom: 6px solid #F0F3F7">
+           <div class="container-fluid">
+               <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+                   <span class="icon-bar"></span>
+               </button>
+               
+               <a class="brand" href="#" onclick="return false;" style="padding:5px 0 0 10px;">
+                   <img ng-src="img/inspur_logo.png" alt="" style="height:30px" />
+                   <span class="font-style">Management System</span>
+               </a>
+               <div class="nav-collapse collapse">
+                   <ul class="nav">
+
+                       <!-- <li><a id="console" href="#" ng-bind="mainString.consoleString"></a></li>  ui-sref="home" -->
+                   </ul>
+                   <ul class="nav pull-right">
+                       <!-- <li class="divider-vertical" style="border-right:0px"></li> -->
+
+                       <li class="dropdown">
+                           <a href="#" id="languageBtn" class="dropdown-toggle" data-toggle="dropdown" >
+                               <img ng-src="img/lan-logo.png" alt=""  style="display:block;float:left;margin-right:5px" />
+                               <span ng-bind="signString.languageString"></span>
+                               <b class="caret"></b>
+                           </a>
+                           <ul class="dropdown-menu" id="lanUl">
+                               <li><a href ng-click="chLang('cn')" >ä¸­æ</a></li>
+                               <li><a href ng-click="chLang('en')" >English</a></li>
+                           </ul>
+                       </li>
+
+                   </ul>
+               </div><!--/.nav-collapse -->
+           </div>
+       </div>
+    </div>
+    <div class="container-fluid">
+        <!--<div class="span8 offset2 left-width">-->
+        <div class=" text-center">
+            <div style="height:150px;"></div>
+            <!--<div class="row-fluid">
+                <h1 ng-bind="signString.loginNote" style="color:#666666;"></h1>
+            </div>-->
+            <div class="row-fluid" style="margin-top:20px">
+                <!--<div class="span5 browser-border">
+                    <blockquote>
+                        <p ng-bind="signString.browserRecommended"></p>
+                    </blockquote>
+
+                    <ul>
+                        <li ng-bind="signString.ie9AndAbove"></li>
+                        <li ng-bind="signString.firefoxString"></li>
+                        <li ng-bind="signString.chromeString"></li>
+                    </ul>
+                </div>-->
+                <div class="text-center" >
+                    <div class="row-fluid" style="margin-bottom: 20px">
+                        <h1 ng-bind="signString.loginNote" style="color:#666666;"></h1>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="icon-user"></i></span>
+                            <input  id="iduserName" type="text" ng-model="username" name="username" maxlength="75" auto-fill>
+                        </div>
+                        <br/>
+                        <div class="input-prepend" style="margin-top:5px">
+                            <span class="add-on"><i class="icon-lock"></i></span>
+                            <input type="password"  ng-model="password" name="password" maxlength="75" autocomplete="off">
+                        </div>
+                        <br/>
+                        <label class="checkbox" style="display:none">
+                            <input type="checkbox" value="remember-me" ng-cloak>{{signString.rememberMe}}
+                        </label>
+                            
+                        <div style="padding-top:5px" >
+                            <a class="text-left" ng-bind="signString.forgetPwd" style="cursor: pointer;margin-top:3px" ng-click="forgotPwd()"></a>
+                            <button class="btn btn-success" ng-style="{'margin-left':currentLanguage=='cn'?'120px':'60px'}" type="submit"  ng-bind="signString.loginBtn" ng-click="doValidate()"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- /container -->
+        <div id="push"></div>
+    </div>
+
+    <div id="footer">
+        <div class="container">
+            <p class="muted credit text-center" ><span ng-bind-html="signString.copyrightStringPrefix"></span><span><script type="text/javascript">
+
+                var d = new Date();
+                document.write(d.getUTCFullYear());
+
+            </script></span><span ng-bind="signString.copyrightStringSuffix"></span></p>
+            <p class="muted credit text-center" ng-bind="signString.companyString"></p>
+        </div>
+    </div>
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="lib/jquery/jquery-1.11.0.min.js"></script>
+    <script src="lib/jquery/jquery.cookie.js"></script>
+    <script src="lib/twitter/bootstrap.min.js"></script>
+
+    <script src="lib/angular/angular-1.2.6.js"></script>
+    <script src="lib/angular/angular-sanitize.min.js"></script>
+    <script src="js/signin.js"></script>
+  </body>
+</html>
