@@ -40,11 +40,13 @@ class MegapointAPI(ManageAPI, ServerSSH):
             headers={
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            data=urlencode({
-                "user": self.username,
-                "password": self.password,
-                "killduplicatedsession": "true",
-            }),
+            data=urlencode(
+                {
+                    "user": self.username,
+                    "password": self.password,
+                    "killduplicatedsession": "true",
+                }
+            ),
             verify=False,
         )
         r.raise_for_status()

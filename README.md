@@ -24,3 +24,10 @@ API is the same as `inspur`.
 - `megapoint`
 
 ![megapoint](docs/imgs/megapoint.png)
+
+## QuickStart
+
+```bash
+alembic revision -m "update"
+alembic upgrade head
+```

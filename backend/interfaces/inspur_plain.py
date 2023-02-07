@@ -50,9 +50,11 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
             headers={
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            data=urlencode({
-                "POWER_INFO.XML": "(0,0)",
-            }),
+            data=urlencode(
+                {
+                    "POWER_INFO.XML": "(0,0)",
+                }
+            ),
         )
         r.raise_for_status()
         # POWER_INFO.XML=(0%2C0)&time_stamp=Sun%20Feb%2005%202023%2019%3A10%3A51%20GMT%2B0800%20(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&_=
@@ -67,9 +69,11 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
             headers={
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            data=urlencode({
-                "POWER_INFO.XML": "(1,5)",
-            }),
+            data=urlencode(
+                {
+                    "POWER_INFO.XML": "(1,5)",
+                }
+            ),
         )
         r.raise_for_status()
         state = re.search(r"<POWER STATUS=\"(.*?)\"/>", r.text)
@@ -83,9 +87,11 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
             headers={
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            data=urlencode({
-                "POWER_INFO.XML": "(1,3)",
-            }),
+            data=urlencode(
+                {
+                    "POWER_INFO.XML": "(1,3)",
+                }
+            ),
         )
         r.raise_for_status()
         state = re.search(r"<POWER STATUS=\"(.*?)\"/>", r.text)
@@ -99,9 +105,11 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
             headers={
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            data=urlencode({
-                "POWER_INFO.XML": "(1,1)",
-            }),
+            data=urlencode(
+                {
+                    "POWER_INFO.XML": "(1,1)",
+                }
+            ),
         )
         r.raise_for_status()
         state = re.search(r"<POWER STATUS=\"(.*?)\"/>", r.text)

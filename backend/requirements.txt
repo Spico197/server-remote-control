@@ -2,3 +2,7 @@ paramiko
 requests
 fastapi
 uvicorn
+aiosqlite
+bcrypt
+alembic
+sqlmodel
