@@ -26,6 +26,8 @@ $ python run.py get_gpu_num -c conf/server.json
 
 - Use as a full-stack web app
 
+> NOTICE: Under development, maybe 鸽了
+
 ```bash
 alembic revision -m "update"
 alembic upgrade head
@@ -33,7 +35,7 @@ alembic upgrade head
 
 ## 📝 Notice
 
-- A server may be down even the PMI system says it's on.
+- A server may be down even the PMI system says it's on. In this case, `ServerDownException` will be thrown during `ssh_ping` or `get_gpu_num`.
 
 ## 🎐 Supported Systems
 

@@ -4,7 +4,7 @@
         "ssh_port": 22,
         "ssh_username": "root",
         "ssh_password": "rootPasswordForLinuxSystem",
-        "manage_url": "http://host.to.manage.system",
+        "manage_url": "http://192.168.x.x",
         "manage_username": "admin",
         "manage_password": "adminpass",
         "manage_type": "inspur",
