@@ -1,5 +1,5 @@
 # 💻 server-remote-control
-Remote power control by accessing BMI.
+Remote power control by accessing IPMI web APIs.
 
 ## 🚀 QuickStart
 
