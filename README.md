@@ -1,12 +1,22 @@
 # 💻 server-remote-control
 Remote power control by accessing IPMI web APIs.
 
+## 🌴 Dependencies
+
+Python>=3.9
+- requests==2.28.2
+- paramiko==3.0.0
+
 ## 🚀 QuickStart
 
 - Use as a utility tool
 
 ```bash
+# clone the code base, or you can download as `.zip` file
+$ git clone https://github.com/Spico197/server-remote-control.git
+# install dependencies
 $ pip install -U requests paramiko
+# settings
 $ cp conf/server.json.example conf/server.json
 # change and modify info in conf/server.json
 $ vim conf/server.json
