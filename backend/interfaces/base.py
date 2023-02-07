@@ -1,3 +1,6 @@
+import logging
+logging.getLogger("paramiko").setLevel(logging.WARNING)
+
 from paramiko import AutoAddPolicy
 from paramiko.client import SSHClient
 from paramiko.ssh_exception import AuthenticationException, SSHException
@@ -26,7 +29,7 @@ class ServerDownException(SSHException):
 
 class ServerSSH:
     def __init__(
-        self, ssh_ip, ssh_username, ssh_password, ssh_port=22, ssh_timeout=2.0
+        self, ssh_ip, ssh_username, ssh_password, ssh_port=22, ssh_timeout=10.0
     ) -> None:
         self.ssh_ip = ssh_ip
         self.ssh_port = ssh_port
@@ -35,8 +38,8 @@ class ServerSSH:
         self.ssh_timeout = ssh_timeout
 
     def ssh_ping(self):
+        client = SSHClient()
         try:
-            client = SSHClient()
             client.load_system_host_keys()
             client.connect(
                 self.ssh_ip,
@@ -53,10 +56,12 @@ class ServerSSH:
             raise NotImplementedError
         except (EOFError, SSHException, Exception) as err:
             return False
+        finally:
+            client.close()
 
     def ssh_run(self, command: str, timeout=10.0):
+        client = SSHClient()
         try:
-            client = SSHClient()
             client.load_system_host_keys()
             client.set_missing_host_key_policy(AutoAddPolicy())
             client.connect(
@@ -74,6 +79,8 @@ class ServerSSH:
             raise NotImplementedError
         except (EOFError, SSHException, Exception):
             raise ServerDownException
+        finally:
+            client.close()
 
     def get_gpu_num(self, timeout=10.0):
         sout, serr = self.ssh_run("nvidia-smi -L | wc -l", timeout=timeout)

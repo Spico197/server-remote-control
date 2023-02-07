@@ -1,9 +1,9 @@
 [
     {
-        "ip": "1.1.1.1",
+        "ssh_ip": "1.1.1.1",
         "ssh_port": 22,
-        "username": "root",
-        "password": "rootPasswordForLinuxSystem",
+        "ssh_username": "root",
+        "ssh_password": "rootPasswordForLinuxSystem",
         "manage_url": "http://host.to.manage.system",
         "manage_username": "admin",
         "manage_password": "adminpass",

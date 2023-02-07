@@ -32,10 +32,13 @@ class InspurAPI(ManageAPI, ServerSSH):
         self.session = requests.Session()
 
     def __del__(self):
+        self.logout()
         if self.session:
             self.session.close()
 
     def login(self):
+        if self.check_login():
+            return
         r = self.session.post(
             f"{self.url}/rpc/WEBSES/create.asp",
             data=f"WEBVAR_USERNAME={self.username}&WEBVAR_PASSWORD={self.password}",
@@ -49,17 +52,33 @@ class InspurAPI(ManageAPI, ServerSSH):
             jar.set("SessionExpired", "false")
             self.cookie = jar
 
-    def check_login(self):
-        if not self.cookie:
-            self.login()
+    def logout(self):
+        r = self.session.get(f"{self.url}/rpc/WEBSES/logout.asp", cookies=self.cookie)
+        r.raise_for_status()
+        assert "HAPI_STATUS:0" in r.text or "HAPI_STATUS:-1" in r.text
+
+    def check_login(self) -> bool:
+        r = self.session.get(f"{self.url}/index.html", cookies=self.cookie)
+        r.raise_for_status()
+        if "forgotPwd()" in r.text and "remember-me" in r.text:
+            return False
+        else:
+            r = self.session.get(
+                f"{self.url}/rpc/hoststatus.asp",
+                cookies=self.cookie,
+            )
+            if "Please relogin" in r.text:
+                return False
+            else:
+                return True
 
     def get_power_status(self) -> int:
-        self.check_login()
-
+        self.login()
         r = self.session.get(
             f"{self.url}/rpc/hoststatus.asp",
             cookies=self.cookie,
         )
+        self.logout()
         r.raise_for_status()
         state = re.search(r"'JF_STATE'\s*:\s*(\d+)", r.text)
         if state:
@@ -67,34 +86,34 @@ class InspurAPI(ManageAPI, ServerSSH):
         return -1
 
     def power_off(self):
-        self.check_login()
-
+        self.login()
         r = self.session.post(
             f"{self.url}/rpc/hostctl.asp",
             data="WEBVAR_POWER_CMD=5",
             cookies=self.cookie,
         )
+        self.logout()
         r.raise_for_status()
         assert re.search(r"HAPI_STATUS\s*:\s*0\s*}", r.text)
 
     def power_reset(self):
-        self.check_login()
-
+        self.login()
         r = self.session.post(
             f"{self.url}/rpc/hostctl.asp",
             data="WEBVAR_POWER_CMD=3",
             cookies=self.cookie,
         )
+        self.logout()
         r.raise_for_status()
         assert re.search(r"HAPI_STATUS\s*:\s*0\s*}", r.text)
 
     def power_on(self):
-        self.check_login()
-
+        self.login()
         r = self.session.post(
             f"{self.url}/rpc/hostctl.asp",
             data="WEBVAR_POWER_CMD=1",
             cookies=self.cookie,
         )
+        self.logout()
         r.raise_for_status()
         assert re.search(r"HAPI_STATUS\s*:\s*0\s*}", r.text)

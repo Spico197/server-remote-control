@@ -31,10 +31,21 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
         self.session = requests.Session()
 
     def __del__(self):
+        self.logout()
         if self.session:
             self.session.close()
 
+    def check_login(self) -> bool:
+        r = self.session.get(f"{self.url}")
+        r.raise_for_status()
+        if "document.writeln(lang.LANG_LOGIN_PROMPT)" in r.text:
+            return False
+        else:
+            return True
+
     def login(self):
+        if self.check_login():
+            return
         r = self.session.post(
             f"{self.url}/cgi/login.cgi",
             headers={
@@ -44,7 +55,14 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
         )
         r.raise_for_status()
 
+    def logout(self):
+        r = self.session.get(
+            f"{self.url}/cgi/logout.cgi",
+        )
+        r.raise_for_status()
+
     def get_power_status(self) -> int:
+        self.login()
         r = self.session.post(
             f"{self.url}/cgi/ipmi.cgi",
             headers={
@@ -56,6 +74,7 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
                 }
             ),
         )
+        self.logout()
         r.raise_for_status()
         # POWER_INFO.XML=(0%2C0)&time_stamp=Sun%20Feb%2005%202023%2019%3A10%3A51%20GMT%2B0800%20(%E4%B8%AD%E5%9B%BD%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)&_=
         state = re.search(r"<POWER STATUS=\"(.*?)\"/>", r.text)
@@ -64,6 +83,7 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
         return -1
 
     def power_off(self):
+        self.login()
         r = self.session.post(
             f"{self.url}/cgi/ipmi.cgi",
             headers={
@@ -75,6 +95,7 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
                 }
             ),
         )
+        self.logout()
         r.raise_for_status()
         state = re.search(r"<POWER STATUS=\"(.*?)\"/>", r.text)
         if state:
@@ -82,6 +103,7 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
         return -1
 
     def power_reset(self):
+        self.login()
         r = self.session.post(
             f"{self.url}/cgi/ipmi.cgi",
             headers={
@@ -93,6 +115,7 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
                 }
             ),
         )
+        self.logout()
         r.raise_for_status()
         state = re.search(r"<POWER STATUS=\"(.*?)\"/>", r.text)
         if state:
@@ -100,6 +123,7 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
         return -1
 
     def power_on(self) -> int:
+        self.login()
         r = self.session.post(
             f"{self.url}/cgi/ipmi.cgi",
             headers={
@@ -111,6 +135,7 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
                 }
             ),
         )
+        self.logout()
         r.raise_for_status()
         state = re.search(r"<POWER STATUS=\"(.*?)\"/>", r.text)
         if state:
