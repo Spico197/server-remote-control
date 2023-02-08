@@ -102,6 +102,26 @@ class InspurPlainAPI(ManageAPI, ServerSSH):
             return 1 if state.group(1) == "ON" else 0
         return -1
 
+    def power_off_immediate(self):
+        self.login()
+        r = self.session.post(
+            f"{self.url}/cgi/ipmi.cgi",
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            data=urlencode(
+                {
+                    "POWER_INFO.XML": "(1,0)",
+                }
+            ),
+        )
+        self.logout()
+        r.raise_for_status()
+        state = re.search(r"<POWER STATUS=\"(.*?)\"/>", r.text)
+        if state:
+            return 1 if state.group(1) == "ON" else 0
+        return -1
+
     def power_reset(self):
         self.login()
         r = self.session.post(

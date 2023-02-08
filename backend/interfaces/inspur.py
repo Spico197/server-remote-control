@@ -96,6 +96,17 @@ class InspurAPI(ManageAPI, ServerSSH):
         r.raise_for_status()
         assert re.search(r"HAPI_STATUS\s*:\s*0\s*}", r.text)
 
+    def power_off_immediate(self):
+        self.login()
+        r = self.session.post(
+            f"{self.url}/rpc/hostctl.asp",
+            data="WEBVAR_POWER_CMD=0",
+            cookies=self.cookie,
+        )
+        self.logout()
+        r.raise_for_status()
+        assert re.search(r"HAPI_STATUS\s*:\s*0\s*}", r.text)
+
     def power_reset(self):
         self.login()
         r = self.session.post(
