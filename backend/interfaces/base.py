@@ -1,3 +1,4 @@
+import re
 import logging
 logging.getLogger("paramiko").setLevel(logging.WARNING)
 
@@ -72,7 +73,7 @@ class ServerSSH:
                 timeout=self.ssh_timeout,
             )
             _, sout, serr = client.exec_command(command, timeout=timeout)
-            return (sout.readlines(), serr.readlines())
+            return "".join(sout.readlines()) + "\n" + "".join(serr.readlines())
         except AuthenticationException:
             raise AuthenticationException
         except KeyboardInterrupt:
@@ -83,8 +84,22 @@ class ServerSSH:
             client.close()
 
     def get_gpu_num(self, timeout=10.0):
-        sout, serr = self.ssh_run("nvidia-smi -L | wc -l", timeout=timeout)
-        if "command not found" in sout:
+        out = self.ssh_run("nvidia-smi -L | wc -l", timeout=timeout)
+        if "command not found" in out:
             return 0
         else:
-            return int(sout[0].strip())
+            return int(out.strip())
+
+    def get_gpu_process(self):
+        out = self.ssh_run("nvidia-smi | grep -B 2 -A 100 'PID'")
+        if "not found" in out:
+            return "No GPUs"
+        elif "No running processes found" in out:
+            return "No running processes found"
+        else:
+            pids = re.findall(r"|\s*(\d+)\s*", out)
+            return ",".join(pids)
+
+    def who(self):
+        out = self.ssh_run("who | cut -d' ' -f 1")
+        return out.strip().replace('\n', ',')
